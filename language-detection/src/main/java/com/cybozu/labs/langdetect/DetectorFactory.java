@@ -23,8 +23,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.kgusarov.textprocessing.langdetect.LangProfileDocument;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -54,9 +50,6 @@ import static java.util.Collections.unmodifiableList;
 @SuppressWarnings("unchecked")
 public class DetectorFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetectorFactory.class);
-    private static final Pattern SHORT_MESSAGE_RESOURCES = Pattern.compile("^sm/(.*)\\.json$");
-    private static final Pattern LONG_MESSAGE_RESOURCES = Pattern.compile("^nr/(.*)\\.json$");
-    private static final Pattern JSON_MATCHER = Pattern.compile("^(.*)\\.json$");
 
     final Map<String, double[]> languageProbabilityMap = Maps.newHashMap();
     final List<String> languages = Lists.newArrayList();
@@ -64,16 +57,57 @@ public class DetectorFactory {
     /**
      * Create new {@code DetectorFactory}
      *
-     * @param shortMessages             Should this detector factory use short message profiles
      * @throws LangDetectException      In case language profiles weren't read for some reason
      */
-    public DetectorFactory(final boolean shortMessages) {
-        final Pattern resourceFilter = shortMessages ? SHORT_MESSAGE_RESOURCES : LONG_MESSAGE_RESOURCES;
-        final Reflections reflections = new Reflections(null, new ResourcesScanner());
-        final List<String> resources = reflections.getResources(JSON_MATCHER)
-                .stream()
-                .filter(s -> resourceFilter.matcher(s).matches())
-                .collect(Collectors.toList());
+    public DetectorFactory() {
+        List<String> resources = List.of(
+                "sm/ar.json",
+                "sm/bg.json",
+                "sm/bn.json",
+                "sm/ca.json",
+                "sm/cs.json",
+                "sm/da.json",
+                "sm/de.json",
+                "sm/el.json",
+                "sm/en.json",
+                "sm/es.json",
+                "sm/et.json",
+                "sm/fa.json",
+                "sm/fi.json",
+                "sm/fr.json",
+                "sm/gu.json",
+                "sm/he.json",
+                "sm/hi.json",
+                "sm/hr.json",
+                "sm/hu.json",
+                "sm/id.json",
+                "sm/it.json",
+                "sm/ja.json",
+                "sm/ko.json",
+                "sm/lt.json",
+                "sm/lv.json",
+                "sm/mk.json",
+                "sm/ml.json",
+                "sm/nl.json",
+                "sm/no.json",
+                "sm/pa.json",
+                "sm/pl.json",
+                "sm/pt.json",
+                "sm/ro.json",
+                "sm/ru.json",
+                "sm/si.json",
+                "sm/sq.json",
+                "sm/sv.json",
+                "sm/ta.json",
+                "sm/te.json",
+                "sm/th.json",
+                "sm/tl.json",
+                "sm/tr.json",
+                "sm/uk.json",
+                "sm/ur.json",
+                "sm/vi.json",
+                "sm/zh-cn.json",
+                "sm/zh-tw.json");
 
         final int languageCount = resources.size();
         final ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -90,11 +124,6 @@ public class DetectorFactory {
                 throw new LangDetectException(ErrorCode.FAILED_TO_INITIALIZE, "Failed to read language profile", e);
             }
         }
-    }
-
-    @VisibleForTesting
-    DetectorFactory() {
-        // Used only for tests
     }
 
     /**

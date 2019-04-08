@@ -79,7 +79,7 @@ public class ShortMessageDetectorTest {
         this.s = s;
         this.expectedLang = expectedLang;
 
-        final DetectorFactory detectorFactory = new DetectorFactory(true);
+        final DetectorFactory detectorFactory = new DetectorFactory();
         detector = detectorFactory.create();
     }
 
