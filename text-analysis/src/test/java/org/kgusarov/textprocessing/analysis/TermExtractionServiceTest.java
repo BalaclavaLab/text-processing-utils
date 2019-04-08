@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
 
 public class TermExtractionServiceTest {
-    private static final TermExtractionService SERVICE = new TermExtractionService(true);
+    private static final TermExtractionService SERVICE = new TermExtractionService();
 
     @Test
     public void testGetLvTerms() throws Exception {

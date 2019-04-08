@@ -35,7 +35,7 @@ public class TextAnalysisServiceTest {
     @Test
     public void testAnalyse() throws Exception {
         final TransliterationService ts = TransliterationServiceFactory.create();
-        final TermExtractionService tes = new TermExtractionService(true);
+        final TermExtractionService tes = new TermExtractionService();
         final TextCleanupService tcs = new TextCleanupService();
 
         final TextAnalysisService service = new TextAnalysisService(tes, tcs, ts);

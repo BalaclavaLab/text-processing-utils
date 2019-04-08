@@ -118,12 +118,11 @@ public class TermExtractionService {
     /**
      * Create new {@code TermExtractionService}
      *
-     * @param shortMessages             Should this term extraction service use short message profiles
      * @throws TextAnalysisException    In case language {@code com.cybozu.labs.langdetect.DetectorFactory} fails to initialize
      */
-    public TermExtractionService(final boolean shortMessages) {
+    public TermExtractionService() {
         try {
-            detectorFactory = new DetectorFactory(shortMessages);
+            detectorFactory = new DetectorFactory();
             analyzers = initializeAnalyzers();
         } catch (final LangDetectException e) {
             throw new TextAnalysisException("Failed to create language detector factory", e);
